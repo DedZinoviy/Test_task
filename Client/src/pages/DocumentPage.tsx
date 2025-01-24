@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link  } from 'react-router-dom';
 import { Button, Typography, Paper, Box } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
@@ -26,6 +26,15 @@ const DocumentPage: React.FC = () => {
     window.history.back();
   };
 
+  // Функция для формирования пути с параметрами
+  const createUrlWithParams = (search?: string, filterEmail?: string) => {
+    const params = new URLSearchParams();
+    if (search) params.set('search', search);
+    if (filterEmail) params.set('filterEmail', filterEmail);
+
+    return `?${params.toString()}`;
+  };
+
   return (
     <Paper sx={{ padding: 3, margin: '20px auto', maxWidth: 800 }}>
       <Typography variant="h4" gutterBottom align="center" sx={{ fontWeight: 'bold' }}>
@@ -36,18 +45,28 @@ const DocumentPage: React.FC = () => {
         <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
           Имя:
         </Typography>
-        <Typography variant="body1" sx={{ paddingLeft: 1 }}>
-          {comment.name}
-        </Typography>
+        {/* Ссылка на страницу с параметрами search и filterEmail */}
+        <Link
+          to={'/' + createUrlWithParams(comment.name, undefined)}
+        >
+          <Typography variant="body1" sx={{ paddingLeft: 1, color: 'blue', textDecoration: 'underline' }}>
+            {comment.name}
+          </Typography>
+        </Link>
       </Box>
 
       <Box sx={{ marginBottom: 2 }}>
         <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
           Почта:
         </Typography>
-        <Typography variant="body1" sx={{ paddingLeft: 1 }}>
-          {comment.email}
-        </Typography>
+        {/* Ссылка на страницу с параметрами search и фильтром по почте */}
+        <Link
+          to={'/' + createUrlWithParams(undefined, comment.email)}
+        >
+          <Typography variant="body1" sx={{ paddingLeft: 1, color: 'blue', textDecoration: 'underline' }}>
+            {comment.email}
+          </Typography>
+        </Link>
       </Box>
 
       <Box sx={{ marginBottom: 3 }}>
@@ -59,7 +78,6 @@ const DocumentPage: React.FC = () => {
         </Typography>
       </Box>
 
-      {/* Кнопка "Назад" */}
       <Button
         onClick={handleBack}
         color="primary"
