@@ -10,10 +10,12 @@ import TableView from '../components/TableView/TableView';
 import { Comment } from '../types/Comment';
 import { setComments, setLoading, setError } from '../redux/CommentSlice';
 import { RootState } from '../redux/store';
+import { CircularProgress, Alert, Box, ThemeProvider } from '@mui/material';
+import Theme from '../types/Theme.ts';  // Импорт темы
 
 /// Получение данных
 const fetchData = async (): Promise<Comment[]> => {
-  const response = await fetch('http://localhost:3000/comments');
+  const response = await fetch('https://jsonplaceholder.typicode.com/comments');
   if (!response.ok) {
     throw new Error('Ошибка при загрузке данных');
   }
@@ -70,7 +72,6 @@ const MainPage: React.FC = () => {
 
   // Обработчики изменений поиска и фильтров
   const handleSearchChange = useCallback((newSearch: string) => {
-    console.log(newSearch);
     setSearchParams({ search: newSearch, filterEmail, filterBody });
   }, [filterEmail, filterBody, setSearchParams]);
 
@@ -83,40 +84,49 @@ const MainPage: React.FC = () => {
   }, [search, filterEmail, setSearchParams]);
 
   if (loading || isLoading) {
-    return <div>Загрузка...</div>;
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <CircularProgress />
+      </Box>
+    );
   }
 
   if (error || queryError instanceof Error) {
-    return <div>Ошибка: {error || queryError?.message}</div>;
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <Alert severity="error">{error || queryError?.message}</Alert>
+      </Box>
+    );
   }
 
   return (
-    <div>
-      { /* Выбор режима отображения */ }
-      <ModeSelector mode={mode} onChangeMode={setMode} />
+    <ThemeProvider theme={Theme}> {/* Используем ThemeProvider для темы */}
+      <Box sx={{ padding: 3 }}>
+        { /* Выбор режима отображения */ }
+        <ModeSelector mode={mode} onChangeMode={setMode} />
 
-      {/* SearchBar */}
-      {mode === 'table' && <SearchBar search={search} onSearchChange={handleSearchChange} />}
+        {/* SearchBar */}
+        {mode === 'table' && <SearchBar search={search} onSearchChange={handleSearchChange} />}
 
-      {/* Фильтрация */}
-      {mode === 'table' && (
-        <div>
-          <h3>Фильтрация</h3>
-          <Filter
-            filterEmail={filterEmail}
-            filterBody={filterBody}
-            onFilterEmailChange={handleFilterEmailChange}
-            onFilterBodyChange={handleFilterBodyChange}
-          />
-        </div>
-      )}
+        {/* Фильтрация */}
+        {mode === 'table' && (
+          <Box sx={{ marginTop: 2 }}>
+            <Filter
+              filterEmail={filterEmail}
+              filterBody={filterBody}
+              onFilterEmailChange={handleFilterEmailChange}
+              onFilterBodyChange={handleFilterBodyChange}
+            />
+          </Box>
+        )}
 
-      {mode === 'json' ? (
-        <JsonView data={data || []} />
-      ) : (
-        <TableView search={search} filterEmail={filterEmail} filterBody={filterBody} />
-      )}
-    </div>
+        {mode === 'json' ? (
+          <JsonView data={data || []} />
+        ) : (
+          <TableView search={search} filterEmail={filterEmail} filterBody={filterBody} />
+        )}
+      </Box>
+    </ThemeProvider>
   );
 };
 

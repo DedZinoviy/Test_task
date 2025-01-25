@@ -1,9 +1,10 @@
 import React from 'react';
-import { useParams, Link  } from 'react-router-dom';
-import { Button, Typography, Paper, Box } from '@mui/material';
+import { useParams, Link } from 'react-router-dom';
+import { Button, Typography, Paper, Box, ThemeProvider } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import { Comment } from '../types/Comment';
+import Theme from '../types/Theme';  // Импортируем тему без расширения .ts
 
 /**
  * Компонент страницы комментария.
@@ -18,7 +19,13 @@ const DocumentPage: React.FC = () => {
 
   // Сообщить об отсутствии комментария, если комментарий не найден
   if (!comment) {
-    return <div>Комментарий не найден</div>;
+    return (
+      <ThemeProvider theme={Theme}>
+        <Box sx={{ padding: 3, textAlign: 'center' }}>
+          <Typography variant="h6">Комментарий не найден</Typography>
+        </Box>
+      </ThemeProvider>
+    );
   }
 
   const handleBack = () => {
@@ -36,65 +43,67 @@ const DocumentPage: React.FC = () => {
   };
 
   return (
-    <Paper sx={{ padding: 3, margin: '20px auto', maxWidth: 800 }}>
-      <Typography variant="h4" gutterBottom align="center" sx={{ fontWeight: 'bold' }}>
-        Детали комментария
-      </Typography>
-
-      <Box sx={{ marginBottom: 2 }}>
-        <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
-          Имя:
+    <ThemeProvider theme={Theme}> {/* Оборачиваем компонент в ThemeProvider */}
+      <Paper sx={{ padding: 3, margin: '20px auto', maxWidth: 800 }}>
+        <Typography variant="h4" gutterBottom align="center" sx={{ fontWeight: 'bold' }}>
+          Детали комментария
         </Typography>
-        {/* Ссылка на страницу с параметрами search и filterEmail */}
-        <Link
-          to={'/' + createUrlWithParams(comment.name, undefined)}
-        >
-          <Typography variant="body1" sx={{ paddingLeft: 1, color: 'blue', textDecoration: 'underline' }}>
-            {comment.name}
+
+        <Box sx={{ marginBottom: 2 }}>
+          <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
+            Имя:
           </Typography>
-        </Link>
-      </Box>
+          {/* Ссылка на страницу с параметрами search и filterEmail */}
+          <Link
+            to={'/' + createUrlWithParams(comment.name, undefined)}
+          >
+            <Typography variant="body1" sx={{ paddingLeft: 1, color: 'blue', textDecoration: 'underline' }}>
+              {comment.name}
+            </Typography>
+          </Link>
+        </Box>
 
-      <Box sx={{ marginBottom: 2 }}>
-        <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
-          Почта:
-        </Typography>
-        {/* Ссылка на страницу с параметрами search и фильтром по почте */}
-        <Link
-          to={'/' + createUrlWithParams(undefined, comment.email)}
-        >
-          <Typography variant="body1" sx={{ paddingLeft: 1, color: 'blue', textDecoration: 'underline' }}>
-            {comment.email}
+        <Box sx={{ marginBottom: 2 }}>
+          <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
+            Почта:
           </Typography>
-        </Link>
-      </Box>
+          {/* Ссылка на страницу с параметрами search и фильтром по почте */}
+          <Link
+            to={'/' + createUrlWithParams(undefined, comment.email)}
+          >
+            <Typography variant="body1" sx={{ paddingLeft: 1, color: 'blue', textDecoration: 'underline' }}>
+              {comment.email}
+            </Typography>
+          </Link>
+        </Box>
 
-      <Box sx={{ marginBottom: 3 }}>
-        <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
-          Содержание:
-        </Typography>
-        <Typography variant="body1" sx={{ paddingLeft: 1 }}>
-          {comment.body}
-        </Typography>
-      </Box>
+        <Box sx={{ marginBottom: 3 }}>
+          <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
+            Содержание:
+          </Typography>
+          <Typography variant="body1" sx={{ paddingLeft: 1 }}>
+            {comment.body}
+          </Typography>
+        </Box>
 
-      <Button
-        onClick={handleBack}
-        color="primary"
-        variant="contained"
-        sx={{
-          display: 'block',
-          margin: '0 auto',
-          padding: '10px 20px',
-          backgroundColor: '#3f51b5',
-          '&:hover': {
-            backgroundColor: '#303f9f',
-          },
-        }}
-      >
-        Назад
-      </Button>
-    </Paper>
+        <Button
+          onClick={handleBack}
+          color="primary"
+          variant="contained"
+          sx={{
+            display: 'block',
+            margin: '0 auto',
+            padding: '10px 20px',
+            backgroundColor: '#3f51b5',
+            '&:hover': {
+              backgroundColor: '#303f9f',
+            },
+          }}
+        >
+          Назад
+        </Button>
+      </Paper>
+    </ThemeProvider>
   );
 };
 
