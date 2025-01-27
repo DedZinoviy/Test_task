@@ -20,8 +20,20 @@ export function searchParamsFilter(searchParams: SearchParams) {
  * @returns результат сравнения: true - если изменились, false - если нет.
  */
 export function isUrlFilterChanged(searchParams: URLSearchParams, newSearchParams: SearchParams) {
-    if (searchParams.get('search') !== newSearchParams.search ||
-        searchParams.get('filterBody') !== newSearchParams.filterBody ||
-        searchParams.get('filterEmail') !== newSearchParams.filterEmail) return true;
+    if ((searchParams.get('search') || undefined) !== newSearchParams.search ||
+        (searchParams.get('filterBody') || undefined) !== newSearchParams.filterBody ||
+        (searchParams.get('filterEmail') || undefined) !== newSearchParams.filterEmail) return true;
     return false;
+}
+
+export function isUrlSearchChanged(searchParams: URLSearchParams, newSearchParams: SearchParams) {
+    return (searchParams.get('search') || undefined) !== newSearchParams.search;
+}
+
+export function isUrlEmailChanged(searchParams: URLSearchParams, newSearchParams: SearchParams) {
+    return (searchParams.get('filterEmail') || undefined) !== newSearchParams.filterEmail;
+}
+
+export function isUrlBodyChanged(searchParams: URLSearchParams, newSearchParams: SearchParams) {
+    return (searchParams.get('filterBody') || undefined) !== newSearchParams.filterBody;
 }
