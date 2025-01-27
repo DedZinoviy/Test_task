@@ -54,11 +54,6 @@ const TableView: React.FC = () => {
 
   return (
     <Box sx={{ padding: 3 }}>
-      {/* TODO: Заголовки страниц в H1 */}
-      <Typography variant="h4" gutterBottom>
-        Таблица
-      </Typography>
-
       <TableContainer component={Paper}>
         <Table>
           <TableHead>

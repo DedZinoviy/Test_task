@@ -1,15 +1,17 @@
 import React from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Button, Typography, Paper, Box } from '@mui/material';
+import { Button, Typography, Box, useColorScheme } from '@mui/material';
 import { useAppSelector } from '../redux';
+import { PageProps } from './PageProps';
+import ReactJson from 'react-json-view';
 
 /**
  * Компонент страницы комментария.
- * TODO: добавить вывод JSON
  */
-export const CommentPage: React.FC = () => {
+export const CommentPage: React.FC<PageProps> = ({viewMode}) => {
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>();  // Получение id из параметров URL
+  const { mode } = useColorScheme();
 
   // Получение комментария из Redux по id
   const comment = useAppSelector((state) =>
@@ -40,13 +42,15 @@ export const CommentPage: React.FC = () => {
   };
 
   return (
-    <Paper sx={{ padding: 3, margin: '20px auto', maxWidth: 800 }}>
-      <Typography variant="h4" gutterBottom align="center" sx={{ fontWeight: 'bold' }}>
+    <Box sx={{ margin: '20px auto', maxWidth: 800 }}>
+      <Typography variant="h1" gutterBottom>
         Детали комментария
       </Typography>
-
+      
+      { viewMode === 'table' ? (
+        <>
       <Box sx={{ marginBottom: 2 }}>
-        <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
+        <Typography variant="h6" component="div">
           Имя:
         </Typography>
         {/* Ссылка на страницу с параметрами search и filterEmail */}
@@ -63,7 +67,7 @@ export const CommentPage: React.FC = () => {
       </Box>
 
       <Box sx={{ marginBottom: 2 }}>
-        <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
+        <Typography variant="h6" component="div">
           Почта:
         </Typography>
         {/* Ссылка на страницу с параметрами search и фильтром по почте */}
@@ -80,14 +84,19 @@ export const CommentPage: React.FC = () => {
       </Box>
 
       <Box sx={{ marginBottom: 3 }}>
-        <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
+        <Typography variant="h6" component="div">
           Содержание:
         </Typography>
         <Typography variant="body1" sx={{ paddingLeft: 1 }}>
           {comment.body}
         </Typography>
       </Box>
-
+      </>
+      ) : (
+        <>
+          <ReactJson src={comment} theme={mode === 'light' ? 'bright:inverted' : 'bright'}  />
+        </>
+      )}
       <Button
         onClick={handleBack}
         color="primary"
@@ -104,7 +113,7 @@ export const CommentPage: React.FC = () => {
       >
         Назад
       </Button>
-    </Paper>
+    </Box>
   );
 };
 

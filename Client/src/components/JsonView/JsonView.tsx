@@ -9,8 +9,7 @@ const JsonView: React.FC = () => {
   const { mode } = useColorScheme();
   return (
     <div>
-      <h2>Отображение JSON</h2>
-      <ReactJson src={data} theme={mode === 'light' ? 'bright:inverted' : 'bright'}  />
+      <ReactJson src={data} theme={mode === 'light' ? 'shapeshifter:inverted' : 'shapeshifter'}  />
     </div>
   );
 };

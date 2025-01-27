@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Box, Typography } from '@mui/material';
+import { Button, Box } from '@mui/material';
 
 interface ModeSelectorProps {
   mode: 'json' | 'table';
@@ -9,29 +9,31 @@ interface ModeSelectorProps {
 /** Компонент переключения формата отображения */
 const ModeSelector: React.FC<ModeSelectorProps> = ({ mode, onChangeMode }) => {
   return (
-    <Box display="flex" justifyContent="center" gap={2} marginBottom={3}>
-      <Typography variant="h6">Переключить режим отображения:</Typography>
-      
-
+    <>
+    <Box display="flex" justifyContent="center" sx={{height: '100%'}}>
       {mode === 'table' ? (
-        
       <Button
-      variant="contained"
+      sx={{height: '100%', width: 200}}
+      variant="text"
+      color="inherit"
       onClick={() => onChangeMode('json')}
-    >
+      >
       Отображать JSON
       </Button>
       ) : (
-
-        <Button
-        variant="contained"
-        onClick={() => onChangeMode('table')}
+      <Button
+      sx={{height: '100%', width: 200}}
+      variant="text"
+      color="inherit"
+      onClick={() => onChangeMode('table')}
       >
         Отображать Таблицу
       </Button>
       )}
 
     </Box>
+
+    </>
   );
 };
 
