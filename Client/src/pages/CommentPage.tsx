@@ -94,7 +94,7 @@ export const CommentPage: React.FC<PageProps> = ({viewMode}) => {
       </>
       ) : (
         <>
-          <ReactJson src={comment} theme={mode === 'light' ? 'bright:inverted' : 'bright'}  />
+          <ReactJson src={comment} theme={mode === 'light' ? 'shapeshifter:inverted' : 'shapeshifter'}  />
         </>
       )}
       <Button
