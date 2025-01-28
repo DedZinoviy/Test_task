@@ -18,7 +18,6 @@ function App() {
         minHeight: '100dvh'
       }}>
         <NavBar viewMode={mode} onViewModeChanged={setMode}></NavBar>
-         {/* TODO: Сделать Лого + переключатель темы + Переключатель вида + Юзер меню (история поисков) => Header.tsx = AppBar */}
         <Router>
           <Routes>
             <Route path="/" element={<MainPage viewMode={mode}/>} />
