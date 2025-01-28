@@ -47,7 +47,6 @@ const SearchBar: React.FC = () => {
         value={localSearch}
         onChange={handleChange}
       />
-      {/* TODO: Добавить кнопку очистки всех фильтров */}
     </Box>
   );
 };
