@@ -16,20 +16,12 @@ const Filter: React.FC = () => {
   const [debouncedFilterEmail] = useDebounce(localFilterEmail, 700); // Дебаунсинг для email фильтра
   const [debouncedFilterBody] = useDebounce(localFilterBody, 700);   // Дебаунсинг для body фильтра
 
-  // useEffect(() => {
-  //   setLocalFilterEmail(initiateFilterEmail);
-  // }, [initiateFilterEmail]);
-
   // Сохранение значений фильтра в URL.
   useEffect(() => {
     const search = searchParams.get('search') || '';
     const newSearchParams = searchParamsFilter({ search, filterEmail: debouncedFilterEmail, filterBody: debouncedFilterBody })
     if (isUrlEmailChanged(searchParams, newSearchParams) || isUrlBodyChanged(searchParams, newSearchParams)) {
-      // console.log('email changed: ' + isUrlEmailChanged(searchParams, newSearchParams));
-      // console.log('body changed: ' + isUrlBodyChanged(searchParams, newSearchParams));
       setSearchParams(newSearchParams);
-      // console.log('Update filter URL');
-      // console.log(newSearchParams);
     }
   }, [debouncedFilterEmail, debouncedFilterBody, searchParams, setSearchParams]);
 
@@ -45,7 +37,7 @@ const Filter: React.FC = () => {
 
   return (
     <Box display="flex" gap={2} marginBottom={2} flexDirection="column">
-      <Typography variant="h6" gutterBottom>Фильтрация</Typography> {/* Заголовок для фильтров */}
+      <Typography variant="h6" gutterBottom>Фильтрация</Typography>
       <FilterField
         label='Фильтр по email'
         value={localFilterEmail}
